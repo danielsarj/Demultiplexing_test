@@ -14,14 +14,14 @@ for (i in 1:length(input_f)){
 
   #job file header
   sbatch_topper <- '#!/bin/sh' %&% '\n' %&% '#SBATCH --time=36:00:00' %&% '\n' %&%
-    '#SBATCH --mem=120G' %&% '\n' %&% '#SBATCH --partition=caslake' %&% '\n' %&%
+    '#SBATCH --mem=120G' %&% '\n' %&% '#SBATCH --partition=caslake' %&% '\n' %&% '#SBATCH --get-user-env' %&% '\n' %&%
     '#SBATCH --account=pi-lbarreiro' %&% '\n' %&% '#SBATCH --nodes=1' %&% '\n' %&%
     '#SBATCH --error='%&% souporcell_folder %&%'/souporcell_genocorr_' %&% input_f[i] %&% '.error' %&% '\n' %&%
     '#SBATCH --out='%&% souporcell_folder %&%'/souporcell_genocorr_' %&% input_f[i] %&% '.out' %&%
     '\n\n' %&% 'module load singularity'
 
   #command line
-  command_line <- 'singularity exec --bind ' %&% project_folder %&% ' ' %&%
+  command_line <- 'singularity exec --cleanenv --bind ' %&% project_folder %&% ' ' %&%
     souporcell_folder %&% 'Demuxafy.sif Assign_Indiv_by_Geno.R -r ' %&%
     vcf_file %&% ' -c ' %&% souporcell_outdir %&% '/cluster_genotypes.vcf ' %&%
     '-o ' %&% souporcell_outdir
