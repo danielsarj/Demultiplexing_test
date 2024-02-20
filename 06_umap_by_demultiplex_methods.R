@@ -2,7 +2,6 @@ library(data.table)
 library(tidyverse)
 library(janitor)
 library(ggpubr)
-library(viridis)
 "%&%" <- function(a,b) paste(a,b, sep = "")
 
 u4d <- fread('TCellUnstim4d_UMAPprojection.csv')
@@ -104,12 +103,12 @@ for (m in c('vireo', 'demuxalot', 'souporcell')){
   }
 }
 
-ggarrange(s4d_vireo, s4d_demuxalot, s4d_souporcell,
-          s16h_vireo, s16h_demuxalot, s16h_souporcell,
+ggarrange(s16h_vireo, s16h_demuxalot, s16h_souporcell,
+          s4d_vireo, s4d_demuxalot, s4d_souporcell,
           common.legend=T)
 ggsave('stim_umap_allmethods.pdf',width=12, height=8)
 
-ggarrange(u4d_vireo, u4d_demuxalot, u4d_souporcell,
-          u16h_vireo, u16h_demuxalot, u16h_souporcell,
+ggarrange(u16h_vireo, u16h_demuxalot, u16h_souporcell,
+          u4d_vireo, u4d_demuxalot, u4d_souporcell,
           common.legend=T)
 ggsave('unstim_umap_allmethods.pdf',width=12, height=8)
