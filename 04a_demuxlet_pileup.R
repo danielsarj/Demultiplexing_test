@@ -18,8 +18,8 @@ for (i in 1:nrow(input_f)){
   #job file header
   sbatch_topper <- '#!/bin/sh' %&% '\n' %&% '#SBATCH --time=36:00:00' %&% '\n' %&%
     '#SBATCH --mem=120G' %&% '\n' %&% '#SBATCH --partition=caslake' %&% '\n' %&%
-    '#SBATCH --account=pi-lbarreiro' %&% '\n' %&% '#SBATCH --nodes=5' %&% '\n' %&%
-    '#SBATCH --ntasks=5' %&% '\n' %&% '#SBATCH --cpus-per-task=12' %&% '\n' %&%
+    '#SBATCH --account=pi-lbarreiro' %&% '\n' %&% '#SBATCH --nodes=10' %&% '\n' %&%
+    '#SBATCH --ntasks=10' %&% '\n' %&% '#SBATCH --cpus-per-task=12' %&% '\n' %&%
     '#SBATCH --error='%&% demuxlet_folder %&%'demuxlet_pileup_' %&% input_f$V1[i] %&% '.error' %&% '\n' %&%
     '#SBATCH --out='%&% demuxlet_folder %&%'demuxlet_pileup_' %&% input_f$V1[i] %&% '.out' %&%
     '\n\n' %&% 'module load singularity'
