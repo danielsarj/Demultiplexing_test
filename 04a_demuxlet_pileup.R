@@ -7,7 +7,7 @@ demuxlet_folder <- project_folder %&% 'demuxlet/'
 vcf_file <- project_folder %&% 'VCFs/5samples.pilot.cecily.liftedb38.sorted.newheader.vcf.gz'
 
 #read input file
-input_f <- read.csv(demuxlet_folder %&% 'input_files.txt', sep=' ', header=F)
+input_f <- read.csv(demuxlet_folder %&% 'input_files2.txt', sep=' ', header=F)
 
 for (i in 1:nrow(input_f)){
   barcode_file <- input_f$V2[i]
@@ -17,9 +17,8 @@ for (i in 1:nrow(input_f)){
 
   #job file header
   sbatch_topper <- '#!/bin/sh' %&% '\n' %&% '#SBATCH --time=36:00:00' %&% '\n' %&%
-    '#SBATCH --mem=160G' %&% '\n' %&% '#SBATCH --partition=caslake' %&% '\n' %&%
-    '#SBATCH --account=pi-lbarreiro' %&% '\n' %&% '#SBATCH --nodes=5' %&% '\n' %&%
-    '#SBATCH --ntasks=5' %&% '\n' %&% '#SBATCH --cpus-per-task=12' %&% '\n' %&%
+    '#SBATCH --mem=300G' %&% '\n' %&% '#SBATCH --partition=lbarreiro' %&% '\n' %&%
+    '#SBATCH --account=pi-lbarreiro' %&% '\n' %&%
     '#SBATCH --error='%&% demuxlet_folder %&%'demuxlet_pileup_' %&% input_f$V1[i] %&% '.error' %&% '\n' %&%
     '#SBATCH --out='%&% demuxlet_folder %&%'demuxlet_pileup_' %&% input_f$V1[i] %&% '.out' %&%
     '\n\n' %&% 'module load singularity'
