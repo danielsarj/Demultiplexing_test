@@ -1,14 +1,19 @@
+#load libraries
 library(data.table)
 library(tidyverse)
 library(janitor)
 library(ggpubr)
 
+#create final empty data frame
 final.df <- data.frame(method=as.character(), condition=as.character(),
                        n_assigned=as.numeric(),n_unassigned=as.numeric(),
                        n_assigned_perc=as.numeric(),n_assigned_perc=as.numeric(),
                        total=as.numeric())
 
-for (m in c('vireo', 'demuxalot', 'souporcell')){
+#load summary for each method,
+#compute total assigned and unassigned cells
+#add to final df
+for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
   if (m=='vireo'){
     tmp <- fread('vireo/vireo_summary_s16h.csv') %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
@@ -131,15 +136,38 @@ for (m in c('vireo', 'demuxalot', 'souporcell')){
                                   assigned/(assigned+unassigned), 
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))      
+  } else if (m=='demuxlet'){
+    tmp <- fread('demuxlet/TCell1Unstim16h//demuxlet_summary.tsv', header=T) %>% clean_names()
+    unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
+      pull(assignment_n) %>% sum()
+    assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
+      pull(assignment_n) %>% sum()    
+    final.df <- rbind(final.df, c('demuxlet', 'unstim16h', assigned, unassigned,
+                                  assigned/(assigned+unassigned), 
+                                  unassigned/(assigned+unassigned),
+                                  assigned+unassigned))    
+    
+    tmp <- fread('demuxlet/TCell1Unstim4d//demuxlet_summary.tsv', header=T) %>% clean_names()
+    unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
+      pull(assignment_n) %>% sum()
+    assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
+      pull(assignment_n) %>% sum()    
+    final.df <- rbind(final.df, c('demuxlet', 'unstim4d', assigned, unassigned,
+                                  assigned/(assigned+unassigned), 
+                                  unassigned/(assigned+unassigned),
+                                  assigned+unassigned))   
   }
 }
 
+#rename column names
 colnames(final.df) <- c('method', 'condition', 'n_assigned', 'n_unassigned',
                        'n_assigned_perc', 'n_unassigned_perc', 'total')
+#correctly format numeric columns
 for (i in 3:ncol(final.df)){
   final.df[,i] <- as.numeric(final.df[,i])
 }
 
+#plot & save file
 ggplot(final.df, aes(x=condition, y=n_assigned_perc, fill=method)) + 
   geom_col(position='dodge') + theme_bw()
 ggsave('n_assigned_perc_vs_condition_by_method.pdf', height=4, width=6)
