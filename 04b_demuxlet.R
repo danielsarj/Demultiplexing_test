@@ -14,7 +14,7 @@ for (i in 1:nrow(input_f)){
   barcode_file <- input_f$V2[i]
   bam_file <- input_f$V3[i]
   demuxlet_outdir <- demuxlet_folder %&% input_f$V1[i]
-
+  
   #job file header
   sbatch_topper <- '#!/bin/sh' %&% '\n' %&% '#SBATCH --time=36:00:00' %&% '\n' %&%
     '#SBATCH --mem=160G' %&% '\n' %&% '#SBATCH --partition=caslake' %&% '\n' %&%
@@ -28,11 +28,8 @@ for (i in 1:nrow(input_f)){
   command_line <- 'singularity exec --bind ' %&% project_folder %&% ' ' %&%
     demuxlet_folder %&% 'Demuxafy.sif popscle demuxlet --plp ' %&%
     demuxlet_outdir %&% '/pileup --vcf ' %&% vcf_file %&%
-    ' --group-list ' %&% barcode_file  %&% ' --field ' %&% field  %&% 
-    ' --out ' %&% demuxlet_outdir %&% '/demuxlet' %&% ' && ' %&%
-    'singularity exec --bind ' %&% project_folder %&% ' ' %&%
-    demuxlet_folder %&% 'Demuxafy.sif bash Demuxlet_summary.sh ' %&% demuxlet_outdir %&%
-    '/demuxlet.best'
+    ' --group-list ' %&% barcode_file  %&% ' --field ' %&% field  %&%
+    ' --out ' %&% demuxlet_outdir %&% '/demuxlet'
   
   #create sbatch file and write into it
   job_file <- file.path(demuxlet_folder, input_f$V1[i] %&% '_demuxlet.sbatch')
@@ -43,3 +40,4 @@ for (i in 1:nrow(input_f)){
   system(launch_call) #launches the job into midway
   cat('Submitted:', input_f$V1[i], '\n')
 }
+
