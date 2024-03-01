@@ -1,15 +1,18 @@
+#load libraries
 library(data.table)
 library(tidyverse)
 library(janitor)
 library(ggpubr)
-"%&%" <- function(a,b) paste(a,b, sep = "")
 
+#load umap coords
 u4d <- fread('TCellUnstim4d_UMAPprojection.csv')
 s4d <- fread('TCellStim4d_UMAPprojection.csv')
 u16h <- fread('TCellUnstim16h_UMAPprojection.csv')
 s16h <- fread('TCellStim16h_UMAPprojection.csv')
 
-for (m in c('vireo', 'demuxalot', 'souporcell')){
+#for every method, get barcode and donor_id
+#join to umap coords and make a scatter plot
+for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
   if (m=='vireo'){
     tmp <- fread('vireo/Stim4d_donor_ids.tsv') %>% select(cell, donor_id) %>%
       inner_join(s4d, by=c('cell'='Barcode')) %>% clean_names() %>%
@@ -100,9 +103,26 @@ for (m in c('vireo', 'demuxalot', 'souporcell')){
     u16h_souporcell <- ggplot(tmp, aes(x=umap_1,y=umap_2, color=donor_id)) + geom_point() + 
       theme_bw() + ggtitle('Unstim16h - Souporcell')
     ggsave('unstim16hsouporcell.pdf', u16h_souporcell, width=6, height=4)
+  } else if (m=='demuxlet'){
+    tmp <- fread('demuxlet/TCell1Unstim16h/demuxlet.best', header=T) %>% filter(DROPLET.TYPE=='SNG') %>% 
+      select(BARCODE, BEST.GUESS) %>% clean_names() %>% rename(donor_id=best_guess)
+    tmp <- tmp %>% separate(col=donor_id, sep=',', into=c('donor_id','a','b')) %>% select(barcode, donor_id)
+    tmp <- tmp %>% inner_join(u16h, by=c('barcode'='Barcode')) %>% clean_names()
+    u16h_demuxlet <- ggplot(tmp, aes(x=umap_1,y=umap_2, color=donor_id)) + geom_point() + 
+      theme_bw() + ggtitle('Unstim16h - Demuxlet')
+    ggsave('unstim16hdemuxlet.pdf', u16h_demuxlet, width=6, height=4)
+    
+    tmp <- fread('demuxlet/TCell1Unstim4d/demuxlet.best', header=T) %>% filter(DROPLET.TYPE=='SNG') %>% 
+      select(BARCODE, BEST.GUESS) %>% clean_names() %>% rename(donor_id=best_guess)
+    tmp <- tmp %>% separate(col=donor_id, sep=',', into=c('donor_id','a','b')) %>% select(barcode, donor_id)
+    tmp <- tmp %>% inner_join(u4d, by=c('barcode'='Barcode')) %>% clean_names()
+    u4d_demuxlet <- ggplot(tmp, aes(x=umap_1,y=umap_2, color=donor_id)) + geom_point() + 
+      theme_bw() + ggtitle('Unstim4d - Demuxlet')
+    ggsave('unstim4ddemuxlet.pdf', u4d_demuxlet, width=6, height=4)
   }
 }
 
+#join plots
 ggarrange(s16h_vireo, s16h_demuxalot, s16h_souporcell,
           s4d_vireo, s4d_demuxalot, s4d_souporcell,
           common.legend=T)
@@ -112,3 +132,8 @@ ggarrange(u16h_vireo, u16h_demuxalot, u16h_souporcell,
           u4d_vireo, u4d_demuxalot, u4d_souporcell,
           common.legend=T)
 ggsave('unstim_umap_allmethods.pdf',width=12, height=8)
+
+ggarrange(u16h_vireo, u16h_demuxalot, u16h_souporcell, u16h_demuxlet,
+          u4d_vireo, u4d_demuxalot, u4d_souporcell, u4d_demuxlet,
+          common.legend=T, nrow=2, ncol=4)
+ggsave('unstim_umap_allmethods_wdemuxlet.pdf',width=12, height=8)
