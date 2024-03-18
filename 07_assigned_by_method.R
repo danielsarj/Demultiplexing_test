@@ -15,7 +15,7 @@ final.df <- data.frame(method=as.character(), condition=as.character(),
 #add to final df
 for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
   if (m=='vireo'){
-    tmp <- fread('vireo/vireo_summary_s16h.csv') %>% clean_names()
+    tmp <- fread('../vireo/vireo_summary_s16h.csv') %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -25,7 +25,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))
     
-    tmp <- fread('vireo/vireo_summary_s4d.csv') %>% clean_names()
+    tmp <- fread('../vireo/vireo_summary_s4d.csv') %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -35,7 +35,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))
     
-    tmp <- fread('vireo/vireo_summary_u16h.csv') %>% clean_names()
+    tmp <- fread('../vireo/vireo_summary_u16h.csv') %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -45,7 +45,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))
     
-    tmp <- fread('vireo/vireo_summary_u4d.csv') %>% clean_names()
+    tmp <- fread('../vireo/vireo_summary_u4d.csv') %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -56,7 +56,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   assigned+unassigned))
     
   } else if (m=='demuxalot'){
-    tmp <- fread('demuxalot/TCell1Stim16h/demuxalot_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../demuxalot/TCell1Stim16h/demuxalot_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -66,7 +66,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))    
     
-    tmp <- fread('demuxalot/TCell1Stim4d/demuxalot_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../demuxalot/TCell1Stim4d/demuxalot_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -76,7 +76,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))     
     
-    tmp <- fread('demuxalot/TCell1Unstim16h/demuxalot_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../demuxalot/TCell1Unstim16h/demuxalot_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -86,7 +86,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))    
     
-    tmp <- fread('demuxalot/TCell1Unstim4d/demuxalot_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../demuxalot/TCell1Unstim4d/demuxalot_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -97,7 +97,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   assigned+unassigned))     
     
   } else if (m=='souporcell'){
-    tmp <- fread('souporcell/TCell1Stim16h/souporcell_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../souporcell/TCell1Stim16h/souporcell_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -107,7 +107,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))    
     
-    tmp <- fread('souporcell/TCell1Stim4d/souporcell_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../souporcell/TCell1Stim4d/souporcell_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -117,7 +117,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned)) 
     
-    tmp <- fread('souporcell/TCell1Unstim16h/souporcell_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../souporcell/TCell1Unstim16h/souporcell_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -127,7 +127,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))    
     
-    tmp <- fread('souporcell/TCell1Unstim4d/souporcell_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../souporcell/TCell1Unstim4d/souporcell_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -137,7 +137,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))      
   } else if (m=='demuxlet'){
-    tmp <- fread('demuxlet/TCell1Unstim16h//demuxlet_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../demuxlet/TCell1Unstim16h//demuxlet_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -147,7 +147,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
                                   unassigned/(assigned+unassigned),
                                   assigned+unassigned))    
     
-    tmp <- fread('demuxlet/TCell1Unstim4d//demuxlet_summary.tsv', header=T) %>% clean_names()
+    tmp <- fread('../demuxlet/TCell1Unstim4d//demuxlet_summary.tsv', header=T) %>% clean_names()
     unassigned <- tmp %>% filter(classification %in% c('doublet', 'unassigned')) %>%
       pull(assignment_n) %>% sum()
     assigned <- tmp %>% filter(!classification %in% c('doublet', 'unassigned')) %>%
@@ -161,7 +161,7 @@ for (m in c('vireo', 'demuxalot', 'souporcell', 'demuxlet')){
 
 #rename column names
 colnames(final.df) <- c('method', 'condition', 'n_assigned', 'n_unassigned',
-                       'n_assigned_perc', 'n_unassigned_perc', 'total')
+                        'n_assigned_perc', 'n_unassigned_perc', 'total')
 #correctly format numeric columns
 for (i in 3:ncol(final.df)){
   final.df[,i] <- as.numeric(final.df[,i])
@@ -170,5 +170,6 @@ for (i in 3:ncol(final.df)){
 #plot & save file
 ggplot(final.df, aes(x=condition, y=n_assigned_perc, fill=method)) + 
   geom_col(position='dodge') + theme_bw()
-ggsave('n_assigned_perc_vs_condition_by_method.pdf', height=4, width=6)
-fwrite(final.df, file='summary_all_methods.txt', sep='\t')
+ggsave('../n_assigned_perc_vs_condition_by_method.pdf', height=4, width=6)
+fwrite(final.df, file='../summary_all_methods.txt', sep='\t')
+
